@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.38.1+20161130005133"
+  }
+}

@@ -1,0 +1,575 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "drawer": {
+      "$ref": "#/definitions/drawer"
+    },
+    "pages": {
+      "$ref": "#/definitions/pages"
+    },
+    "footer": {
+      "$ref": "#/definitions/footer"
+    },
+    "theme": {
+      "$ref": "#/definitions/theme"
+    },
+    "metaData": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "integer"
+        }
+      },
+      "required": []
+    }
+  },
+  "definitions": {
+    "drawer": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "object"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "acceptDoubleTap": {
+              "type": "boolean",
+              "default": false
+            },
+            "acceptPan": {
+              "type": "boolean",
+              "default": true
+            },
+            "acceptTap": {
+              "type": "boolean",
+              "default": false
+            },
+            "captureGestures": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false",
+                "open",
+                "closed"
+              ],
+              "defualt": "open"
+            },
+            "closedDrawerOffset": {
+              "type": "integer",
+              "default": 0
+            },
+            "disabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "elevation": {
+              "type": "integer",
+              "default": 0
+            },
+            "initializeOpen": {
+              "type": "boolean",
+              "default": false
+            },
+            "negotiatePan": {
+              "type": "boolean",
+              "default": false
+            },
+            "openDrawerOffset": {
+              "type": "integer",
+              "default": 100
+            },
+            "panThreshold": {
+              "type": "number",
+              "default": 0.25
+            },
+            "side": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ],
+              "defualt": "left"
+            },
+            "styles": {
+              "type": "object",
+              "defualt": {}
+            },
+            "tapToClose": {
+              "type": "boolean",
+              "default": false
+            },
+            "tweenDuration": {
+              "type": "integer",
+              "default": 250
+            },
+            "tweenEasing": {
+              "type": "string",
+              "defualt": "linear"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "overlay",
+                "displace",
+                "static"
+              ],
+              "defualt": "displace"
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "content"
+      ]
+    },
+    "footer": {
+      "type": "object",
+      "properties": {
+        "style": {
+          "type": "object",
+          "properties": {
+            "tabBarTextColor": {
+              "type": "string"
+            },
+            "tabBarActiveTextColor": {
+              "type": "string"
+            },
+            "tabActiveBgColor": {
+              "type": "string"
+            }
+          }
+        },
+        "tabs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "icon": {
+                "type": "string"
+              },
+              "eval": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "index": {
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "style",
+        "tabs"
+      ]
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "layout": {
+            "type": "string"
+          },
+          "style": {
+            "type": "object"
+          },
+          "components": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/text"
+              },
+              {
+                "$ref": "#/definitions/button"
+              },
+              {
+                "$ref": "#/definitions/thumbnail"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "components"
+        ]
+      }
+    },
+    "text": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "default": "empty text"
+        },
+        "style": {
+          "type": "object",
+          "default": {}
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "badgeBg": {
+          "type": "string"
+        },
+        "badgeColor": {
+          "type": "string"
+        },
+        "borderRadiusBase": {
+          "type": "integer"
+        },
+        "borderWidth": {
+          "type": "integer"
+        },
+        "brandDanger": {
+          "type": "string"
+        },
+        "brandInfo": {
+          "type": "string"
+        },
+        "brandPrimary": {
+          "type": "string"
+        },
+        "brandSidebar": {
+          "type": "string"
+        },
+        "brandSuccess": {
+          "type": "string"
+        },
+        "brandWarning": {
+          "type": "string"
+        },
+        "btnDisabledBg": {
+          "type": "string"
+        },
+        "btnDisabledClr": {
+          "type": "string"
+        },
+        "btnFontFamily": {
+          "type": "string"
+        },
+        "btnLineHeight": {
+          "type": "integer"
+        },
+        "buttonPadding": {
+          "type": "integer"
+        },
+        "cardDefaultBg": {
+          "type": "string"
+        },
+        "checkboxBgColor": {
+          "type": "string"
+        },
+        "checkboxSize": {
+          "type": "integer"
+        },
+        "checkboxTickColor": {
+          "type": "string"
+        },
+        "contentPadding": {
+          "type": "integer"
+        },
+        "defaultProgressColor": {
+          "type": "string"
+        },
+        "defaultSpinnerColor": {
+          "type": "string"
+        },
+        "dropdownBg": {
+          "type": "string"
+        },
+        "dropdownLinkColor": {
+          "type": "string"
+        },
+        "fontFamily": {
+          "type": "string"
+        },
+        "fontSizeBase": {
+          "type": "integer"
+        },
+        "footerBtnMargin": {
+          "type": "integer"
+        },
+        "footerDefaultBg": {
+          "type": "string"
+        },
+        "footerHeight": {
+          "type": "integer"
+        },
+        "iconFamily": {
+          "type": "string"
+        },
+        "iconFontSize": {
+          "type": "integer"
+        },
+        "iconLineHeight": {
+          "type": "integer"
+        },
+        "iconMargin": {
+          "type": "integer"
+        },
+        "inputBorderColor": {
+          "type": "string"
+        },
+        "inputErrorBorderColor": {
+          "type": "string"
+        },
+        "inputFontSize": {
+          "type": "integer"
+        },
+        "inputGroupMarginBottom": {
+          "type": "integer"
+        },
+        "inputHeightBase": {
+          "type": "integer"
+        },
+        "inputLineHeight": {
+          "type": "integer"
+        },
+        "inputPaddingLeft": {
+          "type": "integer"
+        },
+        "inputSuccessBorderColor": {
+          "type": "string"
+        },
+        "inverseProgressColor": {
+          "type": "string"
+        },
+        "inverseSpinnerColor": {
+          "type": "string"
+        },
+        "inverseTextColor": {
+          "type": "string"
+        },
+        "iosToolbarBtnColor": {
+          "type": "string"
+        },
+        "jumbotronBg": {
+          "type": "string"
+        },
+        "jumbotronPadding": {
+          "type": "integer"
+        },
+        "lineHeightH1": {
+          "type": "integer"
+        },
+        "lineHeightH2": {
+          "type": "integer"
+        },
+        "lineHeightH3": {
+          "type": "integer"
+        },
+        "lineHeight": {
+          "type": "integer"
+        },
+        "listBorderColor": {
+          "type": "string"
+        },
+        "listDividerBg": {
+          "type": "string"
+        },
+        "listItemHeight": {
+          "type": "integer"
+        },
+        "listItemPadding": {
+          "type": "integer"
+        },
+        "listNoteColor": {
+          "type": "string"
+        },
+        "listNoteSize": {
+          "type": "integer"
+        },
+        "radioBtnSize": {
+          "type": "integer"
+        },
+        "radioColor": {
+          "type": "string"
+        },
+        "subTitleFontSize": {
+          "type": "integer"
+        },
+        "subtitleColor": {
+          "type": "string"
+        },
+        "tabActiveBgColor": {
+          "type": "string"
+        },
+        "tabBarActiveTextColor": {
+          "type": "string"
+        },
+        "tabBarTextColor": {
+          "type": "string"
+        },
+        "tabBgColor": {
+          "type": "string"
+        },
+        "tabFontSize": {
+          "type": "integer"
+        },
+        "tabTextColor": {
+          "type": "string"
+        },
+        "textColor": {
+          "type": "string"
+        },
+        "titleFontSize": {
+          "type": "integer"
+        },
+        "toolbarDefaultBg": {
+          "type": "string"
+        },
+        "toolbarHeight": {
+          "type": "integer"
+        },
+        "toolbarIconSize": {
+          "type": "integer"
+        },
+        "toolbarInputColor": {
+          "type": "string"
+        },
+        "toolbarInverseBg": {
+          "type": "string"
+        },
+        "toolbarTextColor": {
+          "type": "string"
+        }
+      }
+    },
+    "thumbnail": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "thumbnail"
+          ]
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "square": {
+              "type": "boolean",
+              "default": false
+            },
+            "source": {
+              "type": "string",
+              "default": ""
+            },
+            "size": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "source"
+          ]
+        },
+        "style": {
+          "type": "object",
+          "default": {}
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "attributes"
+      ]
+    },
+    "button": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "button"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "eval": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "success",
+              "info",
+              "warning",
+              "danger",
+              "disabled",
+              "bordered",
+              "rounded",
+              "small",
+              "large",
+              "transparent",
+              "capitalize"
+            ]
+          }
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "button": {
+              "type": "object"
+            },
+            "buttonText": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "type"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "pages"
+  ]
+}

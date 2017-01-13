@@ -1,0 +1,14 @@
+.Sidebar-root {
+  flex-direction: row;
+  position: absolute;
+  height: 100%;
+  width: 200px;
+}
+
+.Sidebar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+}

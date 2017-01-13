@@ -1,0 +1,5 @@
+.App-root {
+  flex-direction: row;
+  display: flex;
+  align-items: stretch;
+}
