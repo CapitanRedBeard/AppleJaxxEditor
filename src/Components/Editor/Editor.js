@@ -1,24 +1,51 @@
 import React from 'react';
-// import { SchemaForm } from 'react-schema-form';
 import { connect } from 'react-redux';
+import Paper from 'material-ui/Paper';
 
-// import schemaJSON from './../../Schema/combined.json';
+import schemaJSON from './../../Schema/combined.json';
 import './Editor.css';
 
-const Editor = props => (
-  <div className="Editor-root">
-    <div className="Editor-container">
-      <h1>Editor: {props.ActivePage}</h1>
-    </div>
-  </div>
-);
+const PaperStyle = {
+  height: 667,
+  width: 375,
+  flexBasis: 100,
+  textAlign: 'center',
+  margin: 'auto',
+  marginBottom: 10
+};
+
+class Editor extends React.Component {
+  componentWillMount() {
+    // var editor = JSONEditor(this.editor, {
+    //   schema: schemaJSON
+    // });
+  }
+
+  render() {
+    console.log(this.props.currentPage)
+    return (
+      <div className="Editor-root">
+        <div className="Editor-container">
+          <h1>{this.props.ActivePage}</h1>
+          {this.props.currentPage ? (
+            <Paper style={PaperStyle} />
+          ) : (
+            <h2>Add a page to start creating your app!</h2>
+          )}
+        </div>
+      </div>
+    );
+  }
+}
 
 Editor.defaultProps = {
-  ActivePage: ''
+  ActivePage: '',
+  currentPage: null
 };
 
 Editor.propTypes = {
-  ActivePage: React.PropTypes.string
+  ActivePage: React.PropTypes.string,
+  currentPage: React.PropTypes.object
 };
 
 const mapStateToProps = (state) => {

@@ -18,3 +18,7 @@ body {
 .Index-root {
   display: flex;
 }
+
+.Sidebar {
+  text-align: center;
+}
