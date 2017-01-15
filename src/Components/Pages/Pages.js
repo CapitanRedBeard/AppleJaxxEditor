@@ -30,7 +30,7 @@ class Pages extends React.Component {
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    pages: state.pages
+    pages: state.Mock.pages
   }
 }
 

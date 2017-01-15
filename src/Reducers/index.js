@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import Pages from './Pages'
+import Mock from './Mock'
 
 const editorApp = combineReducers({
-  pages: Pages
+  Mock
 })
 
 export default editorApp
