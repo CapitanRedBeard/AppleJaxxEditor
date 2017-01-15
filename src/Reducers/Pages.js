@@ -2,7 +2,7 @@ const Page = (state, action) => {
   switch (action.type) {
     case 'ADD_PAGE':
       return {
-        key: action.key,
+        name: action.name,
         layout: null,
         components: [],
         style: {}
