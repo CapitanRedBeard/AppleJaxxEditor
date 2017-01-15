@@ -1,3 +1,10 @@
+html,
+body,
+#root,
+.Index-root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,4 +13,8 @@ body {
   line-height: 1.42857143;
   color: #ebebeb;
   background-color: #2b3e50;
+}
+
+.Index-root {
+  display: flex;
 }

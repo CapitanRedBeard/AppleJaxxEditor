@@ -1,8 +1,8 @@
 import React from 'react';
-import Form from 'react-jsonschema-form';
+import { SchemaForm } from 'react-schema-form';
+import combinedSchema from './../../Schema/schema.json';
 
 import './Editor.css';
-import combinedSchema from '../../Schema/theme.json';
 
 const uiSchema = {
   badgeBg: {
@@ -13,22 +13,27 @@ const uiSchema = {
 const log = (type) => console.log.bind(console, type);
 
 class Editor extends React.Component {
-  // <Form schema={combinedSchema}
-  //       onChange={log("changed")}
-  //       onSubmit={log("submitted")}
-  //       onError={log("errors")} />
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      schema: combinedSchema,
+      form: [],
+      model: {}
+    };
+  }
+
   render() {
     return (
       <div className="Editor-root">
         <div className="Editor-container">
           <h1>Editor</h1>
-          <Form
-            schema={combinedSchema}
-            uiSchema={uiSchema}
-            onChange={log('changed')}
-            onSubmit={log('submitted')}
-            onError={log('errors')}
-          />
+            <SchemaForm
+              schema={this.state.schema}
+              form={this.state.form}
+              model={this.props.model}
+              onModelChange={this.props.onModelChange}
+            />
         </div>
       </div>
     );

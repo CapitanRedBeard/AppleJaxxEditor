@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string"
+        },
+        "style": {
+          "type": "object"
+        },
+        "components": {
+          "anyOf": [
+            { "$ref": "#/components/text.json" },
+            { "$ref": "#/components/button.json" },
+            { "$ref": "#/components/thumbnail.json" },
+            { "$ref": "#/components/list.json" },
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "components"
+      ]
+    }
+}

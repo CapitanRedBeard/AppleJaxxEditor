@@ -6,9 +6,11 @@
     "react-scripts": "0.8.5"
   },
   "dependencies": {
+    "apple-jaxx-schema": "git+https://github.com/CapitanRedBeard/AppleJaxxSchema.git",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-jsonschema-form": "^0.41.2"
+    "react-router": "^3.0.1",
+    "react-schema-form": "^0.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,8 +1,0 @@
-{
-  "resolution": "main",
-  "tree": {
-    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/40e416a33c4f14c40ebb888b43d3b38812df6829/react-jsonschema-form/index.d.ts",
-    "raw": "registry:dt/react-jsonschema-form#0.38.1+20161130005133",
-    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/40e416a33c4f14c40ebb888b43d3b38812df6829/react-jsonschema-form/index.d.ts"
-  }
-}
