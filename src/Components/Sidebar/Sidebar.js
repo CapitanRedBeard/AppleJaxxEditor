@@ -1,33 +1,51 @@
 import React from 'react';
-import { Link } from 'react-router'
+import { Link, withRouter } from 'react-router'
+import makeClass from 'classnames';
 
 import './Sidebar.css';
 
+const sections = [
+  {
+    route: 'pages',
+    icon: 'fa-file'
+  },
+  {
+    route: 'design',
+    icon: 'fa-paint-brush'
+  },
+  {
+    route: 'navigation',
+    icon: 'fa-arrow-circle-right'
+  }
+]
+
+const Section = (props) => {
+  const className = makeClass({
+    "Sidebar-sectionLink": true,
+    "Sidebar-active": props.current.includes(props.route)
+  });
+
+  return (
+    <h3>
+      <Link to={props.route} className={className}>
+        <i className={`fa ${props.icon} fa-lg`} />
+      </Link>
+    </h3>
+  )
+}
+
 class SideBar extends React.Component {
   render() {
-    console.log(this.props)
     return (
       <div className="Sidebar-root">
         <div className="Sidebar-container">
-          <h3>
-            <Link to="pages">
-              Pages
-            </Link>
-          </h3>
-          <h3>
-            <Link to="design">
-              Design
-            </Link>
-          </h3>
-          <h3>
-            <Link to="navigation">
-              Navigation
-            </Link>
-          </h3>
+          {sections.map(section => (
+            <Section {...section} current={this.props.location.pathname} />
+          ))}
         </div>
       </div>
     );
   }
 }
 
-export default SideBar;
+export default withRouter(SideBar);

@@ -1,7 +1,16 @@
 .Sidebar-root {
-
+  background-color: darkgray;
+  padding: 10px;
 }
 
 .Sidebar-container {
 
+}
+
+.Sidebar-sectionLink {
+  color: white;
+}
+
+.Sidebar-sectionLink.Sidebar-active {
+  color: red;
 }

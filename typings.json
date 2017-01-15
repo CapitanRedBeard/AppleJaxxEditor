@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "classnames": "registry:dt/classnames#0.0.0+20161113184211",
     "material-ui": "registry:dt/material-ui#0.16.0+20161228203806",
     "redux": "registry:dt/redux#3.5.2+20160703092728",
     "underscore": "registry:dt/underscore#1.8.3+20161123125004"

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './index.css';
+import 'font-awesome/css/font-awesome.css';
 import Editor from './Components/App/App';
 
 import Pages from './Components/Pages/Pages';
