@@ -27,13 +27,16 @@ class Page extends React.Component {
 
     if (this.props.page.name === this.props.ActivePage) {
       _.extend(extraStyles, {
-        background: 'red'
+        background: 'red',
+        color: 'white'
       });
     }
 
     return (
       <Paper style={_.extend({}, PaperStyle, extraStyles)} zDepth={2} onClick={this.onClick.bind(this)}>
-        {this.props.page.name}
+        <div className="Page-root">
+          {this.props.page.name}
+        </div>
       </Paper>
     );
   }
