@@ -37,6 +37,12 @@ const Mock = (state = defaultMock, action) => {
       return _.extend({}, state, {
         pages: Pages(state.pages, action)
       });
+    case 'SET_ACTIVE_PAGE_NAME':
+      const current = _.find(state.pages, page => page.name === action.oldName);
+      current.name = action.newName;
+      current.key = action.newName;
+
+      return state;
     default:
       return state;
   }

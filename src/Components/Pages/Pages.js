@@ -12,8 +12,8 @@ const Pages = props => (
     <h3>Pages</h3>
 
     <div className="Pages-list">
-      {props.pages.map(page =>
-        <Page {...page} key={page.name} />
+      {props.pages.map((page, index) =>
+        <Page key={page.key} index={index} />
       )}
     </div>
 

@@ -1,25 +1,31 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema",
-  "type": "array",
-  "title": "A list of pages",
-  "items": {
-    "type": "object",
-    "title": "A list of strings",
-    "properties": {
-      "key": {
-        "type": "string"
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string"
+        },
+        "style": {
+          "type": "object"
+        },
+        "components": {
+          "anyOf": [
+            { "$ref": "#/components/text.json" },
+            { "$ref": "#/components/button.json" },
+            { "$ref": "#/components/thumbnail.json" },
+            { "$ref": "#/components/list.json" }
+          ]
+        }
       },
-      "layout": {
-        "type": "string"
-      },
-      "style": {
-        "type": "object"
-      }
-    },
-    "additionalProperties": false,
-    "required": [
-      "key",
-      "components"
-    ]
-  }
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "components"
+      ]
+    }
 }

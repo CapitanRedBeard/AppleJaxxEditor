@@ -17,7 +17,7 @@ const PaperStyle = {
 
 class Page extends React.Component {
   onClick() {
-    this.props.onSetActivePage(this.props.name);
+    this.props.onSetActivePage(this.props.page.name);
   }
 
   render() {
@@ -25,7 +25,7 @@ class Page extends React.Component {
       background: 'white'
     };
 
-    if (this.props.name === this.props.ActivePage) {
+    if (this.props.page.name === this.props.ActivePage) {
       _.extend(extraStyles, {
         background: 'red'
       });
@@ -33,24 +33,27 @@ class Page extends React.Component {
 
     return (
       <Paper style={_.extend({}, PaperStyle, extraStyles)} zDepth={2} onClick={this.onClick.bind(this)}>
-        {this.props.name}
+        {this.props.page.name}
       </Paper>
     );
   }
 }
 
 Page.defaultProps = {
-  ActivePage: ''
+  ActivePage: '',
 };
 
 Page.propTypes = {
-  name: React.PropTypes.string.isRequired,
+  page: React.PropTypes.shape({
+    name: React.PropTypes.string.isRequired
+  }).isRequired,
   onSetActivePage: React.PropTypes.func.isRequired,
   ActivePage: React.PropTypes.string
 };
 
-const mapStateToProps = state => ({
-  ActivePage: state.ActivePage
+const mapStateToProps = (state, props) => ({
+  ActivePage: state.ActivePage,
+  page: state.Mock.pages[props.index]
 });
 
 const mapDispatchToProps = ({
