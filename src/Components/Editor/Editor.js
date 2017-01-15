@@ -26,6 +26,7 @@ class Editor extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
+      editingPageName: false,
       pageName: nextProps.ActivePage
     });
   }
