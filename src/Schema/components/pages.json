@@ -18,7 +18,7 @@
             { "$ref": "#/components/text.json" },
             { "$ref": "#/components/button.json" },
             { "$ref": "#/components/thumbnail.json" },
-            { "$ref": "#/components/list.json" },
+            { "$ref": "#/components/list.json" }
           ]
         }
       },
