@@ -1,0 +1,19 @@
+.Pages-root {
+  width: 150px;
+  height: 95%;
+}
+
+.Pages-list {
+  height: calc(100% - 80px);
+  overflow: scroll;
+
+}
+
+.Pages-Add-Page {
+  width: 150px;
+}
+
+.Pages-Button-Container {
+  position: absolute;
+  bottom: 0;
+}
