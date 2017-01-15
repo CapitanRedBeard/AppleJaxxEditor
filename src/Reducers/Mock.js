@@ -8,11 +8,11 @@ const Page = (state, action) => {
         layout: null,
         components: [],
         style: {}
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
 const Pages = (state = [], action) => {
   switch (action.type) {
@@ -20,11 +20,11 @@ const Pages = (state = [], action) => {
       return [
         ...state,
         Page(undefined, action)
-      ]
+      ];
     default:
-      return state
+      return state;
   }
-}
+};
 
 const defaultMock = {
   pages: []
@@ -37,8 +37,8 @@ const Mock = (state = defaultMock, action) => {
         pages: Pages(state.pages, action)
       });
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default Mock
+export default Mock;

@@ -1,20 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, browserHistory } from 'react-router'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import { Router, Route, browserHistory } from 'react-router';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import './index.css';
 import 'font-awesome/css/font-awesome.css';
+import './index.css';
 import Editor from './Components/App/App';
 
 import Pages from './Components/Pages/Pages';
 import Design from './Components/Design/Design';
 import Navigation from './Components/Navigation/Navigation';
-import reducer from './Reducers'
+import reducer from './Reducers';
 
-const store = createStore(reducer)
+injectTapEventPlugin();
+
+const store = createStore(reducer);
 
 const App = ({ sidebar }) => (
   <div className="Index-root">
@@ -25,7 +28,11 @@ const App = ({ sidebar }) => (
     )}
     <Editor />
   </div>
-)
+);
+
+App.propTypes = {
+  sidebar: React.PropTypes.object.isRequired
+};
 
 ReactDOM.render(
   <Provider store={store}>

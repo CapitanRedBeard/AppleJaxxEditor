@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'underscore';
+import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
-import { setActivePage } from '../../Actions';
-import { connect } from 'react-redux'
 
 import './Page.css';
+import { setActivePage } from '../../Actions';
 
 const PaperStyle = {
   height: 100,
@@ -21,14 +21,14 @@ class Page extends React.Component {
   }
 
   render() {
-    let extraStyles = {
+    const extraStyles = {
       background: 'white'
     };
 
     if (this.props.name === this.props.ActivePage) {
       _.extend(extraStyles, {
         background: 'red'
-      })
+      });
     }
 
     return (
@@ -39,19 +39,27 @@ class Page extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    ActivePage: state.ActivePage
-  }
-}
+Page.defaultProps = {
+  ActivePage: ''
+};
+
+Page.propTypes = {
+  name: React.PropTypes.string.isRequired,
+  onSetActivePage: React.PropTypes.func.isRequired,
+  ActivePage: React.PropTypes.string
+};
+
+const mapStateToProps = state => ({
+  ActivePage: state.ActivePage
+});
 
 const mapDispatchToProps = ({
   onSetActivePage: setActivePage
-})
+});
 
 const PageContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Page)
+)(Page);
 
 export default PageContainer;

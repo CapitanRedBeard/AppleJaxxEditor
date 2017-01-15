@@ -6,7 +6,6 @@
 .Pages-list {
   height: calc(100% - 80px);
   overflow: scroll;
-
 }
 
 .Pages-Add-Page {

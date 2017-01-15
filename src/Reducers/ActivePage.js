@@ -3,8 +3,8 @@ const ActivePage = (state = null, action) => {
     case 'SET_ACTIVE_PAGE':
       return action.name;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default ActivePage
+export default ActivePage;
