@@ -32,7 +32,7 @@ class Editor extends React.Component {
   }
 
   onKeyPress(ev) {
-    if (ev.key === 'Enter') {
+    if (ev.key === 'Enter' && ev.currentTarget.value !== '') {
       this.props.onEditPageNameEnter(this.props.ActivePage, ev.currentTarget.value);
       this.setState({
         editingPageName: false
