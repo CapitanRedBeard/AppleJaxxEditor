@@ -3,11 +3,23 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import './ComponentEditor.css';
-import { editActiveComponent } from '../../Actions';
+import { editActiveComponent, addComponent } from '../../Actions';
 
 class ComponentEditor extends React.Component {
+  onAddClick() {
+    this.props.addComponent(this.props.ActivePage, {
+      type: 'text',
+      style: {
+        fontSize: 20,
+        color: '#254E70'
+      },
+      text: 'Default Value'
+    });
+  }
+
   onChange(ev) {
     const newComponent = _.extend({}, this.props.ActiveComponent.component, {
       text: ev.currentTarget.value
@@ -17,7 +29,7 @@ class ComponentEditor extends React.Component {
   }
 
   render() {
-    if (!this.props.ActiveComponent.component) {
+    if (!this.props.ActivePage) {
       return null;
     }
 
@@ -25,16 +37,24 @@ class ComponentEditor extends React.Component {
       <div className="ComponentEditor-Root">
         <h3>Component Editor</h3>
 
-        <TextField
-          defaultValue={this.props.ActiveComponent.component.type}
-          floatingLabelText="Type"
-          disabled
-        />
+        {this.props.ActiveComponent.component ? [
+          <TextField
+            defaultValue={this.props.ActiveComponent.component.type}
+            floatingLabelText="Type"
+            disabled
+          />,
+          <TextField
+            value={this.props.ActiveComponent.component.text}
+            floatingLabelText="Text"
+            onChange={this.onChange.bind(this)}
+          />
+        ] : (
+          <div>No components on this page, try adding one at the bottom.</div>
+        )}
 
-        <TextField
-          value={this.props.ActiveComponent.component.text}
-          floatingLabelText="Text"
-          onChange={this.onChange.bind(this)}
+        <RaisedButton
+          label="Add Component"
+          onClick={this.onAddClick.bind(this)}
         />
       </div>
     );
@@ -47,15 +67,19 @@ ComponentEditor.defaultProps = {
 
 ComponentEditor.propTypes = {
   ActiveComponent: React.PropTypes.object.isRequired,
-  editActiveComponent: React.PropTypes.func.isRequired
+  ActivePage: React.PropTypes.string.isRequired,
+  editActiveComponent: React.PropTypes.func.isRequired,
+  addComponent: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  ActiveComponent: state.ActiveComponent
+  ActiveComponent: state.ActiveComponent,
+  ActivePage: state.ActivePage
 });
 
 const mapDispatchToProps = ({
-  editActiveComponent
+  editActiveComponent,
+  addComponent
 });
 
 const ComponentEditorContainer = connect(

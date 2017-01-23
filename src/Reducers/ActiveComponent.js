@@ -2,6 +2,11 @@ import _ from 'underscore';
 
 const ActiveComponent = (state = {}, action) => {
   switch (action.type) {
+    case 'ADD_COMPONENT':
+      return {
+        page: action.page,
+        component: action.component
+      };
     case 'SET_ACTIVE_COMPONENT':
       return {
         page: action.page,
