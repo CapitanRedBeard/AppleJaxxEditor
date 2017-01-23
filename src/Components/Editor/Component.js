@@ -6,11 +6,31 @@ class Component extends React.Component {
   onClick() {
     this.props.onClick(this.props.page, this.props.index, this.props.component);
   }
-
   render() {
+    console.log(this.props)
+    let component;
+
+    if (this.props.component.type === 'text') {
+      component = this.props.component.text.length ? this.props.component.text : 'default text';
+    } else if (this.props.component.type === 'button') {
+      component = (
+        <button>
+          {this.props.component.text.length ? this.props.component.text : 'button text'}
+        </button>
+      );
+    } else if (this.props.component.type === 'thumbnail') {
+      component = (
+        <img
+          alt="user defined image"
+          style={{ width: this.props.component.attributes.source.size, height: this.props.component.attributes.size }}
+          src={this.props.component.attributes.source.length ? this.props.component.attributes.source : 'https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/rubber-duck-512.png'}
+        />
+      );
+    }
+
     return (
       <div onClick={this.onClick.bind(this)}>
-        {this.props.component.text}
+        {component}
       </div>
     );
   }

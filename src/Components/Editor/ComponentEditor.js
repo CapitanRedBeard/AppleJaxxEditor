@@ -3,18 +3,120 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import Toggle from 'material-ui/Toggle';
 
 import './ComponentEditor.css';
 import { editActiveComponent } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
-
+//source goes to componet instead of attributes
 class ComponentEditor extends React.Component {
-  onChange(ev) {
+  onTextChange(property, ev) {
     const newComponent = _.extend({}, this.props.ActiveComponent.component, {
-      text: ev.currentTarget.value
+      [property]: ev.currentTarget.value
+    });
+    console.log(newComponent)
+    this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
+  }
+
+  onDropdownChange(property, options, ev, index, selectValue) {
+    const newComponent = _.extend({}, this.props.ActiveComponent.component, {
+      [property]: { selected: [selectValue], enum: options }
+    });
+    this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
+  }
+
+  getAttributes(component, deeper) {
+    // let attributes = [
+    //   <TextField
+    //     key="type"
+    //     value={component.type}
+    //     floatingLabelText="Type"
+    //     disabled
+    //   />
+    // ];
+    let attributes = [];
+
+    _.forEach(component, (value, property) => {
+      if (property !== 'style' && property !== 'eval' && deeper) {
+        if (_.isString(value) || _.isNumber(value)) {
+          const ind = attributes.findIndex(attribute => attribute.key === property);
+          if (ind > -1) {
+            attributes.splice(ind, 1, (
+              <TextField
+                key={property}
+                value={value}
+                floatingLabelText={property}
+                onChange={_.bind(this.onTextChange, this, property)}
+                floatingLabelFixed
+                disabled={property === 'type'}
+              />)
+            );
+          } else {
+            attributes.push(
+              <TextField
+                key={property}
+                value={value}
+                floatingLabelText={property}
+                onChange={_.bind(this.onTextChange, this, property)}
+                floatingLabelFixed
+                disabled={property === 'type'}
+              />
+            );
+          }
+        } if (_.isBoolean(value)) {
+          attributes.push(
+            <Toggle label={property} key={property} />
+          );
+        } else if (_.isObject(value) && !_.isArray(value) && value.enum) {
+          console.log(value, property)
+          attributes.push(
+            <SelectField
+              key={property}
+              floatingLabelText={property}
+              value={value.selected ? value.selected[0] : value.items[0]}
+              floatingLabelFixed
+              onChange={_.bind(this.onDropdownChange, this, property, value.enum)}
+            >
+              {_.map(value.enum, attributeEnum => (
+                <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
+              ))}
+            </SelectField>
+          );
+        } else if (_.isObject(value) && !_.isArray(value)) {
+          const attr = this.getAttributes(value, true);
+          console.log(value, property, attr)
+          if (attr.length) {
+            attr.forEach((attribute) => {
+              if (!_.find(attributes, knownAttribute => knownAttribute.key === attribute.key)) {
+                attributes.push(attribute);
+              }
+            });
+          }
+        } else if (_.isObject(value) && _.isArray(value)) {
+
+          // console.log(value, property)
+          // if (value.length) {
+          //   attributes.push(
+          //     <SelectField
+          //       key={property}
+          //       floatingLabelText={property}
+          //       value={value[0]}
+          //       onChange={_.bind(this.onChange, this, property)}
+          //     >
+          //       {_.map(value.enum, attributeEnum => (
+          //         <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
+          //       ))}
+          //     </SelectField>
+          //   );
+          // }
+        }
+      }
     });
 
-    this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
+
+    return attributes;
   }
 
   render() {
@@ -26,20 +128,9 @@ class ComponentEditor extends React.Component {
       <div className="ComponentEditor-Root">
         <h3>Component Editor</h3>
 
-        {this.props.ActiveComponent.component ? [
-          <TextField
-            key="type"
-            defaultValue={this.props.ActiveComponent.component.type}
-            floatingLabelText="Type"
-            disabled
-          />,
-          <TextField
-            key="text"
-            value={this.props.ActiveComponent.component.text}
-            floatingLabelText="Text"
-            onChange={this.onChange.bind(this)}
-          />
-        ] : (
+        {this.props.ActiveComponent.component ? (
+          this.getAttributes(this.props.ActiveComponent.component, true)
+        ) : (
           <div>No components selected on this page, try selecting one on the page or adding one at the bottom.</div>
         )}
 

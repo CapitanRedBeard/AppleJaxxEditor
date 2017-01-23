@@ -10,6 +10,60 @@ import schema from './../../Schema/combined.json';
 
 const allowedComponentsOnPage = schema.properties.pages.items.properties.components.anyOf;
 
+function generateDefaultJSON(baseSchema) {
+  const result = {};
+
+  _.forEach(baseSchema.properties, (propertySchema, property) => {
+    if (propertySchema.type === 'boolean') {
+      if (propertySchema.default) {
+        _.extend(result, { [property]: propertySchema.default });
+      } else if (!propertySchema.default) {
+        _.extend(result, { [property]: false });
+      }
+    }
+
+    if (propertySchema.type === 'integer') {
+      if (propertySchema.default) {
+        _.extend(result, { [property]: propertySchema.default });
+      } else if (!propertySchema.default) {
+        _.extend(result, { [property]: null });
+      }
+    }
+
+    if (propertySchema.type === 'string') {
+      if (propertySchema.enum) {
+        _.extend(result, { [property]: propertySchema.enum[0] });
+      } else if (propertySchema.default) {
+        _.extend(result, { [property]: propertySchema.default });
+      } else if (!propertySchema.default) {
+        _.extend(result, { [property]: '' });
+      }
+    }
+
+    if (propertySchema.type === 'object') {
+      const hasADefault = _.find(propertySchema.properties, objectSchema => objectSchema.default !== null);
+
+      if (propertySchema.default) {
+        _.extend(result, { [property]: propertySchema.default });
+      } else if (hasADefault) {
+        _.extend(result, { [property]: generateDefaultJSON(propertySchema) });
+      } else {
+        _.extend(result, { [property]: {} });
+      }
+    }
+
+    if (propertySchema.type === 'array') {
+      if (propertySchema.default) {
+        _.extend(result, { [property]: { items: propertySchema.default, enum: propertySchema.items.enum } });
+      } else if (!propertySchema.default) {
+        _.extend(result, { [property]: { items: [], enum: propertySchema.items.enum } });
+      }
+    }
+  });
+
+  return result;
+}
+
 class ComponentDrawer extends React.Component {
   constructor(props) {
     super(props);
@@ -20,14 +74,11 @@ class ComponentDrawer extends React.Component {
   }
 
   onAddClick() {
-    this.props.addComponent(this.props.ActivePage, this.props.currentPage.components.length, {
-      type: 'text',
-      style: {
-        fontSize: 20,
-        color: '#254E70'
-      },
-      text: 'Default Value'
-    });
+    this.props.addComponent(
+      this.props.ActivePage,
+      this.props.currentPage.components.length,
+      generateDefaultJSON(this.state.selectedComponent)
+    );
   }
 
   render() {
@@ -37,10 +88,10 @@ class ComponentDrawer extends React.Component {
           {_.map(allowedComponentsOnPage, component => (
             <div
               key={component.properties.type.enum[0]}
-              onClick={() => this.setState({ selectedComponent: component.properties.type.enum[0] })}
+              onClick={() => this.setState({ selectedComponent: component })}
               className={makeClass(
                 'AddComponent-Option',
-                { 'AddComponent-Option-Selected': component.properties.type.enum[0] === this.state.selectedComponent }
+                { 'AddComponent-Option-Selected': this.state.selectedComponent && component.properties.type.enum[0] === this.state.selectedComponent.properties.type.enum[0] }
               )}
             >
               {component.properties.type.enum[0]}
