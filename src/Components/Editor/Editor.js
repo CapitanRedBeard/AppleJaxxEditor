@@ -4,6 +4,7 @@ import { setActivePageName } from '../../Actions';
 
 import './Editor.css';
 import PageEditor from './PageEditor';
+import ComponentEditor from './ComponentEditor';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -64,6 +65,8 @@ class Editor extends React.Component {
             <h2>Add a page to start creating your app!</h2>
           )}
         </div>
+
+        <ComponentEditor />
       </div>
     );
   }

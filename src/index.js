@@ -19,11 +19,11 @@ injectTapEventPlugin();
 
 const store = createStore(reducer);
 
-const Root = ({ sidebar }) => (
+const Root = ({ SidebarPanel }) => (
   <div className="Index-root">
-    {sidebar && (
-      <div className="Sidebar">
-        {sidebar}
+    {SidebarPanel && (
+      <div className="SidebarPanel">
+        {SidebarPanel}
       </div>
     )}
     <Editor />
@@ -31,7 +31,7 @@ const Root = ({ sidebar }) => (
 );
 
 Root.propTypes = {
-  sidebar: React.PropTypes.object.isRequired
+  SidebarPanel: React.PropTypes.object.isRequired
 };
 
 ReactDOM.render(
@@ -39,9 +39,9 @@ ReactDOM.render(
     <MuiThemeProvider>
       <Router history={browserHistory}>
         <Route path="/" component={Root}>
-          <Route path="pages" components={{ sidebar: Pages }} />
-          <Route path="design" components={{ sidebar: Design }} />
-          <Route path="navigation" components={{ sidebar: Navigation }} />
+          <Route path="pages" components={{ SidebarPanel: Pages }} />
+          <Route path="design" components={{ SidebarPanel: Design }} />
+          <Route path="navigation" components={{ SidebarPanel: Navigation }} />
         </Route>
       </Router>
     </MuiThemeProvider>

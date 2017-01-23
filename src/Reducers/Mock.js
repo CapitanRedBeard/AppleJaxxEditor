@@ -32,18 +32,26 @@ const defaultMock = {
 };
 
 const Mock = (state = defaultMock, action) => {
+  let current;
+
   switch (action.type) {
     case 'ADD_PAGE':
       return _.extend({}, state, {
         pages: Pages(state.pages, action)
       });
     case 'ADD_COMPONENT':
-      const currentPage = _.find(state.pages, page => page.name === action.page);
-      currentPage.components = [...currentPage.components, action.component];
+      current = _.find(state.pages, page => page.name === action.page);
+      current.components = [...current.components, action.component];
+
+      return _.extend({}, state);
+    case 'EDIT_ACTIVE_COMPONENT':
+      current = _.find(state.pages, page => page.name === action.page);
+      current.components[action.index] = action.component;
+      current.components = [...current.components];
 
       return _.extend({}, state);
     case 'SET_ACTIVE_PAGE_NAME':
-      const current = _.find(state.pages, page => page.name === action.oldName);
+      current = _.find(state.pages, page => page.name === action.oldName);
       current.name = action.newName;
       current.key = action.newName;
 

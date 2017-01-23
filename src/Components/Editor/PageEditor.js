@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import { addComponent } from '../../Actions';
+import Component from './Component';
 
 const PaperStyle = {
   height: 667,
@@ -16,12 +17,23 @@ const PaperStyle = {
 };
 
 class PageEditor extends React.Component {
+  onAddClick() {
+    this.props.onAddComponent(this.props.ActivePage, {
+      type: 'text',
+      style: {
+        fontSize: 20,
+        color: '#254E70'
+      },
+      text: 'Default Value'
+    });
+  }
+
   render() {
     return (
       <Paper style={PaperStyle}>
         {this.props.components.length ? (
           _.map(this.props.components, (component, index) => (
-            <div key={index}>component</div>
+            <Component key={index} page={this.props.ActivePage} component={component} index={index} />
           ))
         ) : (
           <h3>Add some components to the page to get started!</h3>
@@ -29,18 +41,7 @@ class PageEditor extends React.Component {
 
         <RaisedButton
           label="Add Component"
-          onClick={() => {
-            this.props.onAddComponent(
-              this.props.ActivePage,
-              {
-                type: 'text',
-                style: {
-                  fontSize: 20,
-                  color: '#254E70'
-                },
-                text: 'Attributes'
-              });
-          }}
+          onClick={this.onAddClick.bind(this)}
         />
       </Paper>
     );
@@ -52,7 +53,7 @@ PageEditor.defaultProps = {
 };
 
 PageEditor.propTypes = {
-  ActivePage: React.PropTypes.string,
+  ActivePage: React.PropTypes.string.isRequired,
   components: React.PropTypes.array,
   onAddComponent: React.PropTypes.func.isRequired
 };
