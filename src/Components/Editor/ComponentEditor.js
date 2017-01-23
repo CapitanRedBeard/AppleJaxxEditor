@@ -49,13 +49,15 @@ class ComponentEditor extends React.Component {
             onChange={this.onChange.bind(this)}
           />
         ] : (
-          <div>No components on this page, try adding one at the bottom.</div>
+          <div>No components selected on this page, try selecting one on the page or adding one at the bottom.</div>
         )}
 
-        <RaisedButton
-          label="Add Component"
-          onClick={this.onAddClick.bind(this)}
-        />
+        <div className="ComponentEditor-AddComponent-Container">
+          <RaisedButton
+            label="Add Component"
+            onClick={this.onAddClick.bind(this)}
+          />
+        </div>
       </div>
     );
   }
