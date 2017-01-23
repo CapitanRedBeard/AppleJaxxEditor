@@ -3,23 +3,12 @@ import React from 'react';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 
 import './ComponentEditor.css';
-import { editActiveComponent, addComponent } from '../../Actions';
+import { editActiveComponent } from '../../Actions';
+import ComponentDrawer from './ComponentDrawer';
 
 class ComponentEditor extends React.Component {
-  onAddClick() {
-    this.props.addComponent(this.props.ActivePage, {
-      type: 'text',
-      style: {
-        fontSize: 20,
-        color: '#254E70'
-      },
-      text: 'Default Value'
-    });
-  }
-
   onChange(ev) {
     const newComponent = _.extend({}, this.props.ActiveComponent.component, {
       text: ev.currentTarget.value
@@ -39,11 +28,13 @@ class ComponentEditor extends React.Component {
 
         {this.props.ActiveComponent.component ? [
           <TextField
+            key="type"
             defaultValue={this.props.ActiveComponent.component.type}
             floatingLabelText="Type"
             disabled
           />,
           <TextField
+            key="text"
             value={this.props.ActiveComponent.component.text}
             floatingLabelText="Text"
             onChange={this.onChange.bind(this)}
@@ -52,26 +43,20 @@ class ComponentEditor extends React.Component {
           <div>No components selected on this page, try selecting one on the page or adding one at the bottom.</div>
         )}
 
-        <div className="ComponentEditor-AddComponent-Container">
-          <RaisedButton
-            label="Add Component"
-            onClick={this.onAddClick.bind(this)}
-          />
-        </div>
+        <ComponentDrawer />
       </div>
     );
   }
 }
 
 ComponentEditor.defaultProps = {
-
+  ActivePage: null
 };
 
 ComponentEditor.propTypes = {
   ActiveComponent: React.PropTypes.object.isRequired,
-  ActivePage: React.PropTypes.string.isRequired,
-  editActiveComponent: React.PropTypes.func.isRequired,
-  addComponent: React.PropTypes.func.isRequired
+  ActivePage: React.PropTypes.string,
+  editActiveComponent: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -80,8 +65,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  editActiveComponent,
-  addComponent
+  editActiveComponent
 });
 
 const ComponentEditorContainer = connect(

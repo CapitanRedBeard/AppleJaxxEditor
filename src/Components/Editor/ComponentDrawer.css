@@ -1,0 +1,25 @@
+.AddComponent-Container {
+  width: 250px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.AddComponent-Options {
+  overflow: scroll;
+  white-space: nowrap;
+}
+
+.AddComponent-Option {
+  height: 80px;
+  width: 80px;
+  line-height: 80px;
+  background: white;
+  color: black;
+  display: inline-block;
+  margin:  10px 10px 10px 0;
+}
+
+.AddComponent-Option:last-child {
+  margin-right: 0;
+}
