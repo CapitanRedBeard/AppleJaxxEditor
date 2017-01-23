@@ -5,6 +5,12 @@ export const addPage = () => ({
   name: `page${nextTodoId++}`
 });
 
+export const addComponent = (page, component) => ({
+  type: 'ADD_COMPONENT',
+  page,
+  component
+});
+
 export const setActivePage = name => ({
   type: 'SET_ACTIVE_PAGE',
   name

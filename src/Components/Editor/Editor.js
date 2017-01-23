@@ -1,19 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
 import { setActivePageName } from '../../Actions';
 
-// import schemaJSON from './../../Schema/combined.json';
 import './Editor.css';
-
-const PaperStyle = {
-  height: 667,
-  width: 375,
-  flexBasis: 100,
-  textAlign: 'center',
-  margin: 'auto',
-  marginBottom: 10
-};
+import PageEditor from './PageEditor';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -69,7 +59,7 @@ class Editor extends React.Component {
                 <h1>{this.state.pageName}</h1>
               )}
             </div>,
-            <Paper key="editor" style={PaperStyle} />
+            <PageEditor key="editor" />
           ] : (
             <h2>Add a page to start creating your app!</h2>
           )}
