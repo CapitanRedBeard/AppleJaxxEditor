@@ -25,21 +25,17 @@ class ComponentEditor extends React.Component {
       <div className="ComponentEditor-Root">
         <h3>Component Editor</h3>
 
-        {this.props.ActiveComponent.component.type && (
-          <TextField
-            defaultValue={this.props.ActiveComponent.component.type}
-            floatingLabelText="Type"
-            disabled
-          />
-        )}
+        <TextField
+          defaultValue={this.props.ActiveComponent.component.type}
+          floatingLabelText="Type"
+          disabled
+        />
 
-        {this.props.ActiveComponent.component.text && (
-          <TextField
-            value={this.props.ActiveComponent.component.text}
-            floatingLabelText="Text"
-            onChange={this.onChange.bind(this)}
-          />
-        )}
+        <TextField
+          value={this.props.ActiveComponent.component.text}
+          floatingLabelText="Text"
+          onChange={this.onChange.bind(this)}
+        />
       </div>
     );
   }
