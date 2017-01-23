@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'underscore';
+import makeClass from 'classnames';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -7,7 +8,17 @@ import './ComponentDrawer.css';
 import { addComponent } from '../../Actions';
 import schema from './../../Schema/combined.json';
 
+const allowedComponentsOnPage = schema.properties.pages.items.properties.components.anyOf;
+
 class ComponentDrawer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedComponent: null
+    };
+  }
+
   onAddClick() {
     this.props.addComponent(this.props.ActivePage, this.props.currentPage.components.length, {
       type: 'text',
@@ -20,13 +31,18 @@ class ComponentDrawer extends React.Component {
   }
 
   render() {
-    const allowedComponentsOnPage = schema.properties.pages.items.properties.components.anyOf;
-
     return (
       <div className="AddComponent-Container">
         <div className="AddComponent-Options">
           {_.map(allowedComponentsOnPage, component => (
-            <div key={component.properties.type.enum[0]} className="AddComponent-Option">
+            <div
+              key={component.properties.type.enum[0]}
+              onClick={() => this.setState({ selectedComponent: component.properties.type.enum[0] })}
+              className={makeClass(
+                'AddComponent-Option',
+                { 'AddComponent-Option-Selected': component.properties.type.enum[0] === this.state.selectedComponent }
+              )}
+            >
               {component.properties.type.enum[0]}
             </div>
           ))}
