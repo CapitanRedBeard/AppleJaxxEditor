@@ -5,6 +5,7 @@ const ActiveComponent = (state = {}, action) => {
     case 'ADD_COMPONENT':
       return {
         page: action.page,
+        index: action.index,
         component: action.component
       };
     case 'SET_ACTIVE_COMPONENT':

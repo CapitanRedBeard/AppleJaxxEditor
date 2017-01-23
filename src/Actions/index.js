@@ -16,9 +16,10 @@ export const setActivePageName = (oldName, newName) => ({
   oldName
 });
 
-export const addComponent = (page, component) => ({
+export const addComponent = (page, index, component) => ({
   type: 'ADD_COMPONENT',
   page,
+  index,
   component
 });
 

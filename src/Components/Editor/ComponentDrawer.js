@@ -9,7 +9,7 @@ import schema from './../../Schema/combined.json';
 
 class ComponentDrawer extends React.Component {
   onAddClick() {
-    this.props.addComponent(this.props.ActivePage, {
+    this.props.addComponent(this.props.ActivePage, this.props.currentPage.components.length, {
       type: 'text',
       style: {
         fontSize: 20,
@@ -47,12 +47,18 @@ ComponentDrawer.defaultProps = {
 
 ComponentDrawer.propTypes = {
   ActivePage: React.PropTypes.string.isRequired,
-  addComponent: React.PropTypes.func.isRequired
+  addComponent: React.PropTypes.func.isRequired,
+  currentPage: React.PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  ActivePage: state.ActivePage
-});
+const mapStateToProps = (state) => {
+  const currentPage = state.Mock.pages.find(page => page.name === state.ActivePage);
+
+  return {
+    ActivePage: state.ActivePage,
+    currentPage
+  };
+};
 
 const mapDispatchToProps = ({
   addComponent
