@@ -64,6 +64,7 @@ class ComponentEditor extends React.Component {
           <TextField
             key={property}
             value={value}
+            style={{ width: '250px' }}
             floatingLabelText={property}
             onChange={_.bind(this.onTextChange, this, [...parent, property])}
             floatingLabelFixed
