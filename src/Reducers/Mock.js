@@ -1,4 +1,7 @@
 import _ from 'underscore';
+import underscoreDeepExtend from 'underscore-deep-extend';
+
+_.mixin({ deepExtend: underscoreDeepExtend(_) });
 
 const Page = (state, action) => {
   switch (action.type) {
@@ -56,6 +59,20 @@ const Mock = (state = defaultMock, action) => {
       current.key = action.newName;
 
       return state;
+    case 'SET_DRAWER_SIDE':
+      return _.deepExtend({}, state, {
+        drawer: {
+          [action.side]: {
+            screen: action.page
+          }
+        }
+      });
+    case 'SET_DRAWER_ANIMATION':
+      return _.deepExtend({}, state, {
+        drawer: {
+          animationType: action.animation
+        }
+      });
     default:
       return state;
   }

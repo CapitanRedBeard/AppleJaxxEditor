@@ -145,7 +145,8 @@ ComponentEditor.defaultProps = {
 ComponentEditor.propTypes = {
   ActiveComponent: React.PropTypes.object.isRequired,
   ActivePage: React.PropTypes.string,
-  editActiveComponent: React.PropTypes.func.isRequired
+  editActiveComponent: React.PropTypes.func.isRequired,
+  setActiveComponent: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

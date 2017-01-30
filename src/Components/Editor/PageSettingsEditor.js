@@ -1,17 +1,16 @@
 import React from 'react';
 
 import _ from 'underscore';
-import underscoreDeepExtend from 'underscore-deep-extend';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 import Popover from 'material-ui/Popover';
 
 import './ComponentEditor.css';
-import { editActiveComponent, setActiveComponent } from '../../Actions';
+import { setDrawerSide, setDrawerAnimation } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
+import drawerSchema from './../../Schema/components/drawer.json';
 
 class PageSettingsEditor extends React.Component {
   constructor(props) {
@@ -20,6 +19,10 @@ class PageSettingsEditor extends React.Component {
     this.state = {
       open: false
     };
+  }
+
+  setDrawer(side) {
+    this.props.setDrawerSide(side, this.props.ActivePage);
   }
 
   handleTouchTap(event) {
@@ -38,11 +41,15 @@ class PageSettingsEditor extends React.Component {
   }
 
   render() {
+    const isLeftDrawer = this.props.drawer && this.props.drawer.left && this.props.drawer.left.screen === this.props.ActivePage;
+    const isRightDrawer = this.props.drawer && this.props.drawer.right && this.props.drawer.right.screen === this.props.ActivePage;
+
     return (
       <div className="ComponentEditor-Root">
         <h3>Page Settings</h3>
+
         <h4>
-          Drawer Settings  <i className="fa fa-info-circle fa-lg" onClick={this.handleTouchTap.bind(this)} />
+          Drawer Settings <i className="fa fa-info-circle fa-lg" onClick={this.handleTouchTap.bind(this)} />
         </h4>
 
         <Popover
@@ -58,6 +65,31 @@ class PageSettingsEditor extends React.Component {
           </p>
         </Popover>
 
+        <Toggle
+          label="Use as left drawer"
+          onToggle={_.bind(this.setDrawer, this, 'left')}
+          defaultToggled={isLeftDrawer}
+        />
+
+        <Toggle
+          label="Use as right drawer"
+          onToggle={_.bind(this.setDrawer, this, 'right')}
+          defaultToggled={isRightDrawer}
+        />
+
+        {(isRightDrawer || isLeftDrawer) && (
+          <SelectField
+            floatingLabelText="Drawer Animation"
+            value={this.props.drawer && this.props.drawer.animationType}
+            floatingLabelFixed
+            onChange={(ev, index, animation) => this.props.setDrawerAnimation(animation)}
+          >
+            {_.map(drawerSchema.properties.animationType.enum, animation => (
+              <MenuItem value={animation} primaryText={animation} key={animation} />
+            ))}
+          </SelectField>
+        )}
+
         <ComponentDrawer />
       </div>
     );
@@ -65,21 +97,25 @@ class PageSettingsEditor extends React.Component {
 }
 
 PageSettingsEditor.defaultProps = {
-  ActivePage: null
+  ActivePage: null,
+  drawer: null
 };
 
 PageSettingsEditor.propTypes = {
-  ActivePage: React.PropTypes.string
+  ActivePage: React.PropTypes.string,
+  drawer: React.PropTypes.object,
+  setDrawerSide: React.PropTypes.func.isRequired,
+  setDrawerAnimation: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  // ActiveComponent: state.ActiveComponent,
-  // ActivePage: state.ActivePage
+  ActivePage: state.ActivePage,
+  drawer: state.Mock.drawer
 });
 
 const mapDispatchToProps = ({
-  // editActiveComponent,
-  // setActiveComponent
+  setDrawerSide,
+  setDrawerAnimation
 });
 
 const PageSettingsEditorContainer = connect(
