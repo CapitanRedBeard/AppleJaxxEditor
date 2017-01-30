@@ -74,11 +74,13 @@ class ComponentDrawer extends React.Component {
   }
 
   onAddClick() {
-    this.props.addComponent(
-      this.props.ActivePage,
-      this.props.currentPage.components.length,
-      generateDefaultJSON(this.state.selectedComponent)
-    );
+    if (this.state.selectedComponent) {
+      this.props.addComponent(
+        this.props.ActivePage,
+        this.props.currentPage.components.length,
+        generateDefaultJSON(this.state.selectedComponent)
+      );
+    }
   }
 
   render() {
