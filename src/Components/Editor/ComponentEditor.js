@@ -10,13 +10,14 @@ import Toggle from 'material-ui/Toggle';
 import './ComponentEditor.css';
 import { editActiveComponent } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
-//source goes to componet instead of attributes
+
 class ComponentEditor extends React.Component {
   onTextChange(property, ev) {
-    const newComponent = _.extend({}, this.props.ActiveComponent.component, {
-      [property]: ev.currentTarget.value
-    });
-    console.log(newComponent)
+    const extendo = _.reduceRight(property, (result, prop) => ({
+      [prop]: _.keys(result).length === 0 ? ev.currentTarget.value : result
+    }), {});
+    const newComponent = _.extend({}, this.props.ActiveComponent.component, extendo);
+
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
 
@@ -24,97 +25,65 @@ class ComponentEditor extends React.Component {
     const newComponent = _.extend({}, this.props.ActiveComponent.component, {
       [property]: { selected: [selectValue], enum: options }
     });
+
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
 
-  getAttributes(component, deeper) {
-    // let attributes = [
-    //   <TextField
-    //     key="type"
-    //     value={component.type}
-    //     floatingLabelText="Type"
-    //     disabled
-    //   />
-    // ];
-    let attributes = [];
+  getAttributes(component, parent) {
+    const attributes = [];
+
+    if (!_.isArray(parent)) {
+      parent = [];
+    }
 
     _.forEach(component, (value, property) => {
-      if (property !== 'style' && property !== 'eval' && deeper) {
-        if (_.isString(value) || _.isNumber(value)) {
-          const ind = attributes.findIndex(attribute => attribute.key === property);
-          if (ind > -1) {
-            attributes.splice(ind, 1, (
-              <TextField
-                key={property}
-                value={value}
-                floatingLabelText={property}
-                onChange={_.bind(this.onTextChange, this, property)}
-                floatingLabelFixed
-                disabled={property === 'type'}
-              />)
-            );
-          } else {
-            attributes.push(
-              <TextField
-                key={property}
-                value={value}
-                floatingLabelText={property}
-                onChange={_.bind(this.onTextChange, this, property)}
-                floatingLabelFixed
-                disabled={property === 'type'}
-              />
-            );
-          }
-        } if (_.isBoolean(value)) {
-          attributes.push(
-            <Toggle label={property} key={property} />
-          );
-        } else if (_.isObject(value) && !_.isArray(value) && value.enum) {
-          console.log(value, property)
-          attributes.push(
-            <SelectField
-              key={property}
-              floatingLabelText={property}
-              value={value.selected ? value.selected[0] : value.items[0]}
-              floatingLabelFixed
-              onChange={_.bind(this.onDropdownChange, this, property, value.enum)}
-            >
-              {_.map(value.enum, attributeEnum => (
-                <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
-              ))}
-            </SelectField>
-          );
-        } else if (_.isObject(value) && !_.isArray(value)) {
-          const attr = this.getAttributes(value, true);
-          console.log(value, property, attr)
-          if (attr.length) {
-            attr.forEach((attribute) => {
-              if (!_.find(attributes, knownAttribute => knownAttribute.key === attribute.key)) {
-                attributes.push(attribute);
-              }
-            });
-          }
-        } else if (_.isObject(value) && _.isArray(value)) {
+      if (property === 'style' || property === 'eval') {
+        return;
+      }
 
-          // console.log(value, property)
-          // if (value.length) {
-          //   attributes.push(
-          //     <SelectField
-          //       key={property}
-          //       floatingLabelText={property}
-          //       value={value[0]}
-          //       onChange={_.bind(this.onChange, this, property)}
-          //     >
-          //       {_.map(value.enum, attributeEnum => (
-          //         <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
-          //       ))}
-          //     </SelectField>
-          //   );
-          // }
+      if (_.isString(value) || _.isNumber(value)) {
+        attributes.push(
+          <TextField
+            key={property}
+            value={value}
+            floatingLabelText={property}
+            onChange={_.bind(this.onTextChange, this, [...parent, property])}
+            floatingLabelFixed
+            disabled={property === 'type'}
+          />
+        );
+      } if (_.isBoolean(value)) {
+        attributes.push(
+          <Toggle label={property} key={property} />
+        );
+      } else if (_.isObject(value) && !_.isArray(value) && value.enum) {
+        attributes.push(
+          <SelectField
+            key={property}
+            floatingLabelText={property}
+            value={value.selected ? value.selected[0] : value.items[0]}
+            floatingLabelFixed
+            onChange={_.bind(this.onDropdownChange, this, property, value.enum)}
+          >
+            {_.map(value.enum, attributeEnum => (
+              <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
+            ))}
+          </SelectField>
+        );
+      } else if (_.isObject(value) && !_.isArray(value)) {
+        const attr = this.getAttributes(value, [...parent, property]);
+
+        if (attr.length) {
+          attr.forEach((attribute) => {
+            if (!_.find(attributes, knownAttribute => knownAttribute.key === attribute.key)) {
+              attributes.push(attribute);
+            }
+          });
         }
+      } else if (_.isObject(value) && _.isArray(value)) {
+
       }
     });
-
 
     return attributes;
   }
@@ -129,7 +98,7 @@ class ComponentEditor extends React.Component {
         <h3>Component Editor</h3>
 
         {this.props.ActiveComponent.component ? (
-          this.getAttributes(this.props.ActiveComponent.component, true)
+          this.getAttributes(this.props.ActiveComponent.component)
         ) : (
           <div>No components selected on this page, try selecting one on the page or adding one at the bottom.</div>
         )}
@@ -165,3 +134,82 @@ const ComponentEditorContainer = connect(
 )(ComponentEditor);
 
 export default ComponentEditorContainer;
+
+
+    // _.forEach(component, (value, property) => {
+    //   if (property !== 'style' && property !== 'eval' && deeper) {
+    //     if (_.isString(value) || _.isNumber(value)) {
+    //       const ind = attributes.findIndex(attribute => attribute.key === property);
+    //       if (ind > -1) {
+    //         attributes.splice(ind, 1, (
+    //           <TextField
+    //             key={property}
+    //             value={value}
+    //             floatingLabelText={property}
+    //             onChange={_.bind(this.onTextChange, this, property)}
+    //             floatingLabelFixed
+    //             disabled={property === 'type'}
+    //           />)
+    //         );
+    //       } else {
+    //         attributes.push(
+    //           <TextField
+    //             key={property}
+    //             value={value}
+    //             floatingLabelText={property}
+    //             onChange={_.bind(this.onTextChange, this, property)}
+    //             floatingLabelFixed
+    //             disabled={property === 'type'}
+    //           />
+    //         );
+    //       }
+    //     } if (_.isBoolean(value)) {
+    //       attributes.push(
+    //         <Toggle label={property} key={property} />
+    //       );
+    //     } else if (_.isObject(value) && !_.isArray(value) && value.enum) {
+    //       console.log(value, property)
+    //       attributes.push(
+    //         <SelectField
+    //           key={property}
+    //           floatingLabelText={property}
+    //           value={value.selected ? value.selected[0] : value.items[0]}
+    //           floatingLabelFixed
+    //           onChange={_.bind(this.onDropdownChange, this, property, value.enum)}
+    //         >
+    //           {_.map(value.enum, attributeEnum => (
+    //             <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
+    //           ))}
+    //         </SelectField>
+    //       );
+    //     } else if (_.isObject(value) && !_.isArray(value)) {
+    //       const attr = this.getAttributes(value, true);
+    //       console.log(value, property, attr)
+    //       if (attr.length) {
+    //         attr.forEach((attribute) => {
+    //           if (!_.find(attributes, knownAttribute => knownAttribute.key === attribute.key)) {
+    //             attributes.push(attribute);
+    //           }
+    //         });
+    //       }
+    //     } else if (_.isObject(value) && _.isArray(value)) {
+
+    //       // console.log(value, property)
+    //       // if (value.length) {
+    //       //   attributes.push(
+    //       //     <SelectField
+    //       //       key={property}
+    //       //       floatingLabelText={property}
+    //       //       value={value[0]}
+    //       //       onChange={_.bind(this.onChange, this, property)}
+    //       //     >
+    //       //       {_.map(value.enum, attributeEnum => (
+    //       //         <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
+    //       //       ))}
+    //       //     </SelectField>
+    //       //   );
+    //       // }
+    //     }
+    //   }
+    // });
+
