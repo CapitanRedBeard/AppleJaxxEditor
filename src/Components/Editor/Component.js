@@ -22,13 +22,15 @@ class Component extends React.Component {
         </button>
       );
     } else if (this.props.component.type === 'thumbnail') {
+      const dimension = `${this.props.component.attributes.size}px`;
+
       component = (
         <img
           className={makeClass({
             CircleImage: !this.props.component.attributes.square
           })}
           alt="user defined"
-          style={{ width: this.props.component.attributes.source.size, height: this.props.component.attributes.size }}
+          style={{ width: dimension, height: dimension }}
           src={this.props.component.attributes.source.length ? this.props.component.attributes.source : 'https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/rubber-duck-512.png'}
         />
       );
