@@ -7,31 +7,69 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
+import Popover from 'material-ui/Popover';
 
 import './ComponentEditor.css';
 import { editActiveComponent, setActiveComponent } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
 
-class ComponentEditor extends React.Component {
+class PageSettingsEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false
+    };
+  }
+
+  handleTouchTap(event) {
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  }
+
+  handleRequestClose() {
+    this.setState({
+      open: false,
+    });
+  }
+
   render() {
     return (
       <div className="ComponentEditor-Root">
         <h3>Page Settings</h3>
-        <h4>Drawer Settings</h4>
+        <h4>
+          Drawer Settings  <i className="fa fa-info-circle fa-lg" onClick={this.handleTouchTap.bind(this)} />
+        </h4>
+
+        <Popover
+          className="PopOverTip"
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        >
+          <p>
+            Any page can serve as a drawer on either side of your app. The drawer is usually presented to the user when a menu button is pressed.
+          </p>
+        </Popover>
+
         <ComponentDrawer />
       </div>
     );
   }
 }
 
-ComponentEditor.defaultProps = {
+PageSettingsEditor.defaultProps = {
   ActivePage: null
 };
 
-ComponentEditor.propTypes = {
-  ActiveComponent: React.PropTypes.object.isRequired,
-  ActivePage: React.PropTypes.string,
-  editActiveComponent: React.PropTypes.func.isRequired
+PageSettingsEditor.propTypes = {
+  ActivePage: React.PropTypes.string
 };
 
 const mapStateToProps = state => ({
@@ -44,9 +82,9 @@ const mapDispatchToProps = ({
   // setActiveComponent
 });
 
-const ComponentEditorContainer = connect(
+const PageSettingsEditorContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ComponentEditor);
+)(PageSettingsEditor);
 
-export default ComponentEditorContainer;
+export default PageSettingsEditorContainer;

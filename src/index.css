@@ -22,3 +22,9 @@ body {
 .SidebarPanel {
   text-align: center;
 }
+
+.PopOverTip {
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+}
