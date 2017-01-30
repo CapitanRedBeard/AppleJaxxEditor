@@ -97,6 +97,7 @@ class ComponentEditor extends React.Component {
         const attr = this.getAttributes(value, [...parent, property]);
 
         if (attr.length) {
+          attributes.push(<h4 key={`${property}Title`}>{property}</h4>);
           attr.forEach((attribute) => {
             if (!_.find(attributes, knownAttribute => knownAttribute.key === attribute.key)) {
               attributes.push(attribute);
