@@ -14,20 +14,39 @@ import ComponentDrawer from './ComponentDrawer';
 
 _.mixin({ deepExtend: underscoreDeepExtend(_) });
 
+function createDeepObject(propertyList, value) {
+  return _.reduceRight(propertyList, (result, prop) => ({
+    [prop]: _.keys(result).length === 0 ? value : result
+  }), {});
+}
+
 class ComponentEditor extends React.Component {
   onTextChange(property, ev) {
-    const extendo = _.reduceRight(property, (result, prop) => ({
-      [prop]: _.keys(result).length === 0 ? ev.currentTarget.value : result
-    }), {});
-    const newComponent = _.deepExtend({}, this.props.ActiveComponent.component, extendo);
+    const newComponent = _.deepExtend(
+      {},
+      this.props.ActiveComponent.component,
+      createDeepObject(property, ev.currentTarget.value)
+    );
 
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
 
   onDropdownChange(property, options, ev, index, selectValue) {
-    const newComponent = _.extend({}, this.props.ActiveComponent.component, {
-      [property]: { selected: [selectValue], enum: options }
-    });
+    const newComponent = _.deepExtend(
+      {},
+      this.props.ActiveComponent.component,
+      createDeepObject(property, { selected: [selectValue], enum: options })
+    );
+
+    this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
+  }
+
+  onToggleChange(property, ev) {
+    const newComponent = _.deepExtend(
+      {},
+      this.props.ActiveComponent.component,
+      createDeepObject(property, ev.currentTarget.checked)
+    );
 
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
@@ -53,7 +72,11 @@ class ComponentEditor extends React.Component {
         );
       } if (_.isBoolean(value)) {
         attributes.push(
-          <Toggle label={property} key={property} />
+          <Toggle
+            label={property}
+            key={property}
+            onToggle={_.bind(this.onToggleChange, this, [...parent, property])}
+          />
         );
       } else if (_.isObject(value) && !_.isArray(value) && value.enum) {
         attributes.push(
@@ -62,7 +85,7 @@ class ComponentEditor extends React.Component {
             floatingLabelText={property}
             value={value.selected ? value.selected[0] : value.items[0]}
             floatingLabelFixed
-            onChange={_.bind(this.onDropdownChange, this, property, value.enum)}
+            onChange={_.bind(this.onDropdownChange, this, [...parent, property], value.enum)}
           >
             {_.map(value.enum, attributeEnum => (
               <MenuItem value={attributeEnum} primaryText={attributeEnum} key={attributeEnum} />
