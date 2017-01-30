@@ -1,6 +1,7 @@
 import React from 'react';
 
 import _ from 'underscore';
+import underscoreDeepExtend from 'underscore-deep-extend';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -11,12 +12,14 @@ import './ComponentEditor.css';
 import { editActiveComponent } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
 
+_.mixin({ deepExtend: underscoreDeepExtend(_) });
+
 class ComponentEditor extends React.Component {
   onTextChange(property, ev) {
     const extendo = _.reduceRight(property, (result, prop) => ({
       [prop]: _.keys(result).length === 0 ? ev.currentTarget.value : result
     }), {});
-    const newComponent = _.extend({}, this.props.ActiveComponent.component, extendo);
+    const newComponent = _.deepExtend({}, this.props.ActiveComponent.component, extendo);
 
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
@@ -29,12 +32,8 @@ class ComponentEditor extends React.Component {
     this.props.editActiveComponent(this.props.ActiveComponent.page, this.props.ActiveComponent.index, newComponent);
   }
 
-  getAttributes(component, parent) {
+  getAttributes(component, parent = []) {
     const attributes = [];
-
-    if (!_.isArray(parent)) {
-      parent = [];
-    }
 
     _.forEach(component, (value, property) => {
       if (property === 'style' || property === 'eval') {
