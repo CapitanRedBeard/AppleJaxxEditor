@@ -11,7 +11,8 @@ const PaperStyle = {
   textAlign: 'center',
   margin: 'auto',
   marginBottom: 10,
-  padding: 20
+  padding: 20,
+  overflow: 'hidden'
 };
 
 class PageEditor extends React.Component {

@@ -10,7 +10,6 @@ class Component extends React.Component {
     this.props.onClick(this.props.page, this.props.index, this.props.component);
   }
   render() {
-    console.log(this.props)
     let component;
 
     if (this.props.component.type === 'text') {
@@ -22,15 +21,13 @@ class Component extends React.Component {
         </button>
       );
     } else if (this.props.component.type === 'thumbnail') {
-      const dimension = `${this.props.component.attributes.size}px`;
-
       component = (
         <img
           className={makeClass({
             CircleImage: !this.props.component.attributes.square
           })}
           alt="user defined"
-          style={{ width: dimension, height: dimension }}
+          style={{ height: `${this.props.component.attributes.size}px` }}
           src={this.props.component.attributes.source.length ? this.props.component.attributes.source : 'https://cdn2.iconfinder.com/data/icons/thesquid-ink-40-free-flat-icon-pack/64/rubber-duck-512.png'}
         />
       );
