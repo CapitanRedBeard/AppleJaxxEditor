@@ -4,3 +4,13 @@
   overflow: hidden;
   padding: 5px;
 }
+
+.BackToPageSettings {
+  color: #ebebeb;
+  text-decoration: none;
+}
+
+.BackToPageSettings:hover {
+  color: white;
+  text-decoration: underline;
+}

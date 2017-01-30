@@ -9,7 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 
 import './ComponentEditor.css';
-import { editActiveComponent } from '../../Actions';
+import { editActiveComponent, setActiveComponent } from '../../Actions';
 import ComponentDrawer from './ComponentDrawer';
 
 _.mixin({ deepExtend: underscoreDeepExtend(_) });
@@ -117,17 +117,28 @@ class ComponentEditor extends React.Component {
       return null;
     }
 
+    let content;
+
+    if (this.props.ActiveComponent.component) {
+      content = [
+        <a className="BackToPageSettings" href="#" key="back" onClick={() => this.props.setActiveComponent(this.props.ActivePage)}>
+          <i className="fa fa-chevron-left" aria-hidden="true" />  Page Settings
+        </a>,
+        <h3 key="title">Component Editor</h3>,
+        this.getAttributes(this.props.ActiveComponent.component),
+        <ComponentDrawer key="drawer" />
+      ];
+    } else {
+      content = [
+        <h3 key="title">Page Settings</h3>,
+        <h4 key="drawerSettings">Drawer Settings</h4>,
+        <ComponentDrawer key="ComponentDrawer" />
+      ];
+    }
+
     return (
       <div className="ComponentEditor-Root">
-        <h3>Component Editor</h3>
-
-        {this.props.ActiveComponent.component ? (
-          this.getAttributes(this.props.ActiveComponent.component)
-        ) : (
-          <div>No components selected on this page, try selecting one on the page or adding one at the bottom.</div>
-        )}
-
-        <ComponentDrawer />
+        {content}
       </div>
     );
   }
@@ -149,7 +160,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  editActiveComponent
+  editActiveComponent,
+  setActiveComponent
 });
 
 const ComponentEditorContainer = connect(
